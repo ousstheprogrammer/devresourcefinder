@@ -6,9 +6,9 @@ import CategoryFilter from "@/components/CategoryFilter";
 import ResourceCard from "@/components/ResourceCard";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Search, BarChart, PlusCircle } from "lucide-react";
+import { Search, BarChart, PlusCircle, Sparkles } from "lucide-react";
 import { professions, categories, filterResources, Resource } from "@/utils/data";
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const Index = () => {
   const [selectedProfession, setSelectedProfession] = useState("");
@@ -51,12 +51,23 @@ const Index = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
           >
-            <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-6">
+            <motion.h1 
+              className="text-4xl md:text-5xl font-bold tracking-tight mb-6 flex items-center justify-center gap-2"
+              initial={{ scale: 0.95 }}
+              animate={{ scale: 1 }}
+              transition={{ delay: 0.3, duration: 0.5 }}
+            >
+              <Sparkles className="h-8 w-8 text-primary animate-pulse-slow" />
               Discover the best resources for developers
-            </h1>
-            <p className="text-lg text-muted-foreground mb-8 text-balance">
+            </motion.h1>
+            <motion.p 
+              className="text-lg text-muted-foreground mb-8 text-balance"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.5, duration: 0.5 }}
+            >
               Find curated websites, tools, and platforms tailored to your profession and needs.
-            </p>
+            </motion.p>
           </motion.div>
           
           <motion.div 
@@ -64,6 +75,7 @@ const Index = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1], delay: 0.1 }}
+            whileHover={{ boxShadow: "0 8px 30px rgba(0, 0, 0, 0.08)" }}
           >
             <div className="flex flex-col gap-4">
               <div className="flex flex-col md:flex-row gap-4">
@@ -73,16 +85,18 @@ const Index = () => {
                   onChange={setSelectedProfession}
                 />
                 <div className="relative flex-grow">
-                  <Input
-                    placeholder="Search resources..."
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    onFocus={() => setIsSearchFocused(true)}
-                    onBlur={() => setIsSearchFocused(false)}
-                    className={`pl-10 w-full transition-all duration-300 ease-out-expo ${
-                      isSearchFocused ? "ring-2 ring-primary/20" : ""
-                    }`}
-                  />
+                  <motion.div whileHover={{ scale: 1.01 }} whileTap={{ scale: 0.99 }}>
+                    <Input
+                      placeholder="Search resources..."
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      onFocus={() => setIsSearchFocused(true)}
+                      onBlur={() => setIsSearchFocused(false)}
+                      className={`pl-10 w-full transition-all duration-300 ease-out-expo ${
+                        isSearchFocused ? "ring-2 ring-primary/20" : ""
+                      }`}
+                    />
+                  </motion.div>
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                 </div>
               </div>
@@ -94,10 +108,12 @@ const Index = () => {
                     onChange={setSelectedCategory}
                   />
                 </div>
-                <Button variant="ghost" className="ml-auto" size="sm">
-                  <PlusCircle className="h-4 w-4 mr-2" />
-                  Suggest Resource
-                </Button>
+                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                  <Button variant="ghost" className="ml-auto" size="sm">
+                    <PlusCircle className="h-4 w-4 mr-2" />
+                    Suggest Resource
+                  </Button>
+                </motion.div>
               </div>
             </div>
           </motion.div>
@@ -106,54 +122,80 @@ const Index = () => {
         {/* Results Section */}
         <section className="container-custom py-8 md:py-12">
           <div className="flex flex-col gap-6">
-            <div className="flex items-center justify-between">
+            <motion.div 
+              className="flex items-center justify-between"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.6 }}
+            >
               <h2 className="text-2xl font-semibold">
                 {filteredResources.length} {filteredResources.length === 1 ? "Resource" : "Resources"} Found
               </h2>
-              <Button variant="outline" size="sm" className="gap-2">
-                <BarChart className="h-4 w-4" />
-                <span>Sort</span>
-              </Button>
-            </div>
-            
-            {filteredResources.length > 0 ? (
-              <motion.div 
-                className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
-                variants={container}
-                initial="hidden"
-                animate="show"
-              >
-                {filteredResources.map((resource) => (
-                  <motion.div key={resource.id} variants={item}>
-                    <ResourceCard
-                      title={resource.title}
-                      description={resource.description}
-                      url={resource.url}
-                      category={resource.category}
-                      type={resource.type}
-                      difficulty={resource.difficulty}
-                      votes={resource.votes}
-                    />
-                  </motion.div>
-                ))}
+              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                <Button variant="outline" size="sm" className="gap-2">
+                  <BarChart className="h-4 w-4" />
+                  <span>Sort</span>
+                </Button>
               </motion.div>
-            ) : (
-              <div className="text-center py-12">
-                <h3 className="text-lg font-medium mb-2">No resources found</h3>
-                <p className="text-muted-foreground">
-                  Try adjusting your search or filters to find what you're looking for.
-                </p>
-              </div>
-            )}
+            </motion.div>
+            
+            <AnimatePresence>
+              {filteredResources.length > 0 ? (
+                <motion.div 
+                  className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
+                  variants={container}
+                  initial="hidden"
+                  animate="show"
+                  key="resource-list"
+                >
+                  {filteredResources.map((resource) => (
+                    <motion.div 
+                      key={resource.id} 
+                      variants={item}
+                      layoutId={`resource-${resource.id}`}
+                      whileHover={{ y: -5, transition: { duration: 0.2 } }}
+                    >
+                      <ResourceCard
+                        title={resource.title}
+                        description={resource.description}
+                        url={resource.url}
+                        category={resource.category}
+                        type={resource.type}
+                        difficulty={resource.difficulty}
+                        votes={resource.votes}
+                      />
+                    </motion.div>
+                  ))}
+                </motion.div>
+              ) : (
+                <motion.div 
+                  className="text-center py-12"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.2 }}
+                  key="no-resources"
+                >
+                  <h3 className="text-lg font-medium mb-2">No resources found</h3>
+                  <p className="text-muted-foreground">
+                    Try adjusting your search or filters to find what you're looking for.
+                  </p>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
         </section>
       </main>
       
-      <footer className="border-t border-border/40 py-6 mt-12">
+      <motion.footer 
+        className="border-t border-border/40 py-6 mt-12"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.8 }}
+      >
         <div className="container-custom text-center text-sm text-muted-foreground">
-          <p>DevResourceFinder &copy; {new Date().getFullYear()}. All rights reserved.</p>
+          <p>oussRessourceFinder &copy; {new Date().getFullYear()}. All rights reserved.</p>
         </div>
-      </footer>
+      </motion.footer>
     </div>
   );
 };
