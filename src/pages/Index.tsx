@@ -9,6 +9,14 @@ import { Button } from "@/components/ui/button";
 import { Search, BarChart, PlusCircle, Sparkles } from "lucide-react";
 import { professions, categories, filterResources, Resource } from "@/utils/data";
 import { motion, AnimatePresence } from 'framer-motion';
+import { 
+  Pagination, 
+  PaginationContent, 
+  PaginationItem, 
+  PaginationLink, 
+  PaginationNext, 
+  PaginationPrevious
+} from "@/components/ui/pagination";
 
 const Index = () => {
   const [selectedProfession, setSelectedProfession] = useState("");
@@ -16,11 +24,22 @@ const Index = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredResources, setFilteredResources] = useState<Resource[]>([]);
   const [isSearchFocused, setIsSearchFocused] = useState(false);
+  
+  // Pagination state
+  const [currentPage, setCurrentPage] = useState(1);
+  const resourcesPerPage = 9;
 
   useEffect(() => {
     const results = filterResources(selectedProfession, selectedCategory, searchQuery);
     setFilteredResources(results);
+    setCurrentPage(1); // Reset to first page when filters change
   }, [selectedProfession, selectedCategory, searchQuery]);
+
+  // Calculate pagination values
+  const indexOfLastResource = currentPage * resourcesPerPage;
+  const indexOfFirstResource = indexOfLastResource - resourcesPerPage;
+  const currentResources = filteredResources.slice(indexOfFirstResource, indexOfLastResource);
+  const totalPages = Math.ceil(filteredResources.length / resourcesPerPage);
 
   const container = {
     hidden: { opacity: 0 },
@@ -36,6 +55,82 @@ const Index = () => {
   const item = {
     hidden: { opacity: 0, y: 20 },
     show: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 300, damping: 24 } },
+  };
+
+  // Handle page change
+  const handlePageChange = (pageNumber: number) => {
+    setCurrentPage(pageNumber);
+    window.scrollTo({
+      top: document.getElementById('results-section')?.offsetTop || 0,
+      behavior: 'smooth',
+    });
+  };
+
+  // Generate page links
+  const getPageLinks = () => {
+    const pageLinks = [];
+    
+    // Always show first page
+    pageLinks.push(
+      <PaginationItem key="page-1">
+        <PaginationLink 
+          onClick={() => handlePageChange(1)} 
+          isActive={currentPage === 1}
+        >
+          1
+        </PaginationLink>
+      </PaginationItem>
+    );
+    
+    // Add ellipsis if needed
+    if (currentPage > 3) {
+      pageLinks.push(
+        <PaginationItem key="ellipsis-1">
+          <span className="flex h-9 w-9 items-center justify-center">...</span>
+        </PaginationItem>
+      );
+    }
+    
+    // Add pages around current page
+    for (let i = Math.max(2, currentPage - 1); i <= Math.min(totalPages - 1, currentPage + 1); i++) {
+      if (i > 1 && i < totalPages) {
+        pageLinks.push(
+          <PaginationItem key={`page-${i}`}>
+            <PaginationLink 
+              onClick={() => handlePageChange(i)} 
+              isActive={currentPage === i}
+            >
+              {i}
+            </PaginationLink>
+          </PaginationItem>
+        );
+      }
+    }
+    
+    // Add ellipsis if needed
+    if (currentPage < totalPages - 2) {
+      pageLinks.push(
+        <PaginationItem key="ellipsis-2">
+          <span className="flex h-9 w-9 items-center justify-center">...</span>
+        </PaginationItem>
+      );
+    }
+    
+    // Always show last page if we have more than 1 page
+    if (totalPages > 1) {
+      pageLinks.push(
+        <PaginationItem key={`page-${totalPages}`}>
+          <PaginationLink 
+            onClick={() => handlePageChange(totalPages)} 
+            isActive={currentPage === totalPages}
+          >
+            {totalPages}
+          </PaginationLink>
+        </PaginationItem>
+      );
+    }
+    
+    return pageLinks;
   };
 
   return (
@@ -120,7 +215,7 @@ const Index = () => {
         </section>
 
         {/* Results Section */}
-        <section className="container-custom py-8 md:py-12">
+        <section id="results-section" className="container-custom py-8 md:py-12">
           <div className="flex flex-col gap-6">
             <motion.div 
               className="flex items-center justify-between"
@@ -148,7 +243,7 @@ const Index = () => {
                   animate="show"
                   key="resource-list"
                 >
-                  {filteredResources.map((resource) => (
+                  {currentResources.map((resource) => (
                     <motion.div 
                       key={resource.id} 
                       variants={item}
@@ -182,6 +277,34 @@ const Index = () => {
                 </motion.div>
               )}
             </AnimatePresence>
+            
+            {/* Pagination */}
+            {filteredResources.length > 0 && totalPages > 1 && (
+              <motion.div 
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.7 }}
+                className="mt-8"
+              >
+                <Pagination>
+                  <PaginationContent>
+                    {currentPage > 1 && (
+                      <PaginationItem>
+                        <PaginationPrevious onClick={() => handlePageChange(currentPage - 1)} />
+                      </PaginationItem>
+                    )}
+                    
+                    {getPageLinks()}
+                    
+                    {currentPage < totalPages && (
+                      <PaginationItem>
+                        <PaginationNext onClick={() => handlePageChange(currentPage + 1)} />
+                      </PaginationItem>
+                    )}
+                  </PaginationContent>
+                </Pagination>
+              </motion.div>
+            )}
           </div>
         </section>
       </main>
