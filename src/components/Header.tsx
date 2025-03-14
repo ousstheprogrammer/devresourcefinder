@@ -11,9 +11,9 @@ export default function Header() {
         <div className="flex items-center gap-2">
           <Link to="/" className="flex items-center gap-2">
             <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-              <span className="text-primary-foreground font-bold">D</span>
+              <span className="text-primary-foreground font-bold">O</span>
             </div>
-            <span className="font-medium text-lg tracking-tight">DevResourceFinder</span>
+            <span className="font-medium text-lg tracking-tight">oussRessourceFinder</span>
           </Link>
         </div>
         <div className="flex items-center gap-2">
