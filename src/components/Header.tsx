@@ -1,92 +1,97 @@
-
-import ThemeToggle from "./ThemeToggle";
-import { LogIn, BarChart3Icon, Github, Linkedin, Mail } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { BarChart3Icon, Code } from "lucide-react";
 import { Link } from "react-router-dom";
-import { motion } from "framer-motion";
+
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useTheme } from "@/components/theme-provider";
 
 export default function Header() {
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/80 backdrop-blur-md">
-      <div className="container-custom flex h-16 items-center justify-between">
-        <motion.div 
-          className="flex items-center gap-2"
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.5 }}
-        >
-          <Link to="/" className="flex items-center gap-2">
-            <motion.div 
-              className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center"
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              <span className="text-primary-foreground font-bold">O</span>
-            </motion.div>
-            <span className="font-medium text-lg tracking-tight">oussRessourceFinder</span>
-          </Link>
-        </motion.div>
-        <motion.div 
-          className="flex items-center gap-4"
-          initial={{ opacity: 0, x: 20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.5 }}
-        >
-          <Link to="/analytics">
-            <Button variant="ghost" size="sm" className="gap-2">
-              <BarChart3Icon className="h-4 w-4" />
-              <span>Analytics</span>
+    <div className="flex h-16 w-full border-b bg-background">
+      <div className="container flex items-center justify-between">
+        <div className="flex items-center space-x-2">
+          <Link to="/">
+            <Button variant="link" size="sm">
+              oussRessourceFinder
             </Button>
           </Link>
           
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="sm" className="gap-2">
-                <Mail className="h-4 w-4" />
-                <span>Contact</span>
+          <div className="hidden sm:flex space-x-1">
+            <Link to="/">
+              <Button variant="ghost" size="sm">
+                Home
               </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-56">
-              <DropdownMenuLabel>Contact Information</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem asChild className="cursor-pointer">
-                <a href="https://github.com/ousstheprogrammer" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
-                  <Github className="h-4 w-4" />
-                  <span>GitHub</span>
-                </a>
-              </DropdownMenuItem>
-              <DropdownMenuItem asChild className="cursor-pointer">
-                <a href="https://www.linkedin.com/in/oussama-zouini-48a036280/" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
-                  <Linkedin className="h-4 w-4" />
-                  <span>LinkedIn</span>
-                </a>
-              </DropdownMenuItem>
-              <DropdownMenuItem asChild className="cursor-pointer">
-                <a href="mailto:oussamazouini42@gmail.com" className="flex items-center gap-2">
-                  <Mail className="h-4 w-4" />
-                  <span>oussamazouini42@gmail.com</span>
-                </a>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-          
-          <Link to="/login">
-            <Button variant="outline" size="sm" className="gap-2">
-              <LogIn className="h-4 w-4" />
-              <span>Login</span>
-            </Button>
-          </Link>
-          <ThemeToggle />
-        </motion.div>
+            </Link>
+            
+            <Link to="/developers">
+              <Button variant="ghost" size="sm" className="gap-2">
+                <Code className="h-4 w-4" />
+                <span>Developers</span>
+              </Button>
+            </Link>
+            
+            <Link to="/analytics">
+              <Button variant="ghost" size="sm" className="gap-2">
+                <BarChart3Icon className="h-4 w-4" />
+                <span>Analytics</span>
+              </Button>
+            </Link>
+            
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" size="sm">
+                  Contact
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-56">
+                <DropdownMenuItem asChild>
+                  <a
+                    href="https://github.com/ousstheprogrammer"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    GitHub
+                  </a>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <a
+                    href="https://www.linkedin.com/in/oussama-zouini-48a036280/"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    LinkedIn
+                  </a>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem asChild>
+                  <a href="mailto:oussamazouini42@gmail.com">
+                    Email
+                  </a>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+            
+            <Link to="/login">
+              <Button size="sm">Login</Button>
+            </Link>
+          </div>
+        </div>
+
+        <div className="flex items-center space-x-2">
+          <div className="sm:hidden">
+            <Link to="/login">
+              <Button size="sm">Login</Button>
+            </Link>
+          </div>
+          <useTheme />
+        </div>
       </div>
-    </header>
+    </div>
   );
 }

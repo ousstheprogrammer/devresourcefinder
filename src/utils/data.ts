@@ -7,3 +7,6 @@ export * from './constants';
 export * from './resourcesData';
 export * from './resourcesUtils';
 export * from './analyticsUtils';
+export * from './faqData';
+export * from './blogData';
+export * from './apiSuggestions';

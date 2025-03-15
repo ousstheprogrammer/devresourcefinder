@@ -28,3 +28,21 @@ export interface CategoryOption {
   value: Category;
   label: string;
 }
+
+// FAQ interface
+export interface FAQItem {
+  id: string;
+  question: string;
+  answer: string;
+}
+
+// Blog interface
+export interface BlogPost {
+  id: string;
+  title: string;
+  summary: string;
+  publishDate: string;
+  readTime: string;
+  tags: string[];
+  imageUrl?: string;
+}
