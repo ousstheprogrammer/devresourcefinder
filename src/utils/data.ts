@@ -6,3 +6,4 @@ export * from './types';
 export * from './constants';
 export * from './resourcesData';
 export * from './resourcesUtils';
+export * from './analyticsUtils';
