@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
@@ -18,7 +17,7 @@ import {
   TrendingUpIcon, 
   StarIcon,
   BookIcon,
-  ToolIcon,
+  WrenchIcon,
   FileTextIcon,
   UsersIcon,
   BriefcaseIcon,
@@ -157,7 +156,7 @@ const Analytics = () => {
                     <Card>
                       <CardHeader className="pb-2">
                         <CardTitle className="text-lg font-medium flex items-center gap-2">
-                          <ToolIcon className="h-4 w-4 text-primary" />
+                          <WrenchIcon className="h-4 w-4 text-primary" />
                           Resources by Type
                         </CardTitle>
                         <CardDescription>Free vs. paid distribution</CardDescription>
