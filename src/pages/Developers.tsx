@@ -4,7 +4,7 @@ import FAQSection from '@/components/FAQSection';
 import BlogSection from '@/components/BlogSection';
 import ApiSuggestionsSection from '@/components/ApiSuggestionsSection';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { QuestionMarkCircle, BookOpen, Code } from 'lucide-react';
+import { HelpCircle, BookOpen, Code } from 'lucide-react';
 
 const Developers = () => {
   return (
@@ -19,7 +19,7 @@ const Developers = () => {
       <Tabs defaultValue="faq" className="w-full max-w-7xl mx-auto">
         <TabsList className="grid w-full grid-cols-3">
           <TabsTrigger value="faq" className="flex items-center gap-2">
-            <QuestionMarkCircle className="h-4 w-4" />
+            <HelpCircle className="h-4 w-4" />
             <span>FAQ</span>
           </TabsTrigger>
           <TabsTrigger value="blog" className="flex items-center gap-2">

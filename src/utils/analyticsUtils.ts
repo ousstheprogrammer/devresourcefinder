@@ -2,6 +2,7 @@
 import { resources } from './resourcesData';
 import { Profession } from './types';
 import { professions } from './constants';
+import { useEffect } from 'react';
 
 // Function to get most used resources by profession
 export function getMostUsedResourcesByProfession(profession: string, limit: number = 5) {
@@ -89,4 +90,13 @@ export function getResourcesByProfession() {
       };
     })
     .sort((a, b) => b.value - a.value);
+}
+
+// Analytics hook
+export function useAnalytics() {
+  useEffect(() => {
+    console.log("Analytics initialized");
+    // Here you would typically initialize analytics tracking
+    // For example: Google Analytics, Mixpanel, etc.
+  }, []);
 }

@@ -1,3 +1,4 @@
+
 import { BarChart3Icon, Code } from "lucide-react";
 import { Link } from "react-router-dom";
 
@@ -9,7 +10,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useTheme } from "@/components/theme-provider";
+import ThemeToggle from "@/components/ThemeToggle";
 
 export default function Header() {
   return (
@@ -89,7 +90,7 @@ export default function Header() {
               <Button size="sm">Login</Button>
             </Link>
           </div>
-          <useTheme />
+          <ThemeToggle />
         </div>
       </div>
     </div>
