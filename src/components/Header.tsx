@@ -34,7 +34,7 @@ export default function Header() {
         <div className="flex items-center">
           <Link to="/">
             <Button variant="link" size="sm" className="font-bold text-lg">
-              oussRessourceFinder
+              NO GATEKEEPING
             </Button>
           </Link>
         </div>
@@ -56,6 +56,15 @@ export default function Header() {
                   <NavigationMenuLink className={navigationMenuTriggerStyle()}>
                     <Code className="h-4 w-4 mr-2" />
                     <span>Developers</span>
+                  </NavigationMenuLink>
+                </Link>
+              </NavigationMenuItem>
+              
+              <NavigationMenuItem>
+                <Link to="/roadmaps">
+                  <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                    <BarChart3Icon className="h-4 w-4 mr-2" />
+                    <span>Roadmaps</span>
                   </NavigationMenuLink>
                 </Link>
               </NavigationMenuItem>
@@ -138,6 +147,13 @@ export default function Header() {
                   <Button variant="ghost" size="sm" className="w-full justify-start gap-2">
                     <Code className="h-4 w-4" />
                     <span>Developers</span>
+                  </Button>
+                </Link>
+                
+                <Link to="/roadmaps" onClick={() => setIsOpen(false)}>
+                  <Button variant="ghost" size="sm" className="w-full justify-start gap-2">
+                    <BarChart3Icon className="h-4 w-4" />
+                    <span>Roadmaps</span>
                   </Button>
                 </Link>
                 

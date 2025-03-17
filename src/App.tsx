@@ -1,3 +1,4 @@
+
 import React from "react";
 import {
   BrowserRouter as Router,
@@ -8,12 +9,10 @@ import Index from "./pages/Index";
 import Login from "./pages/Login";
 import Analytics from "./pages/Analytics";
 import NotFound from "./pages/NotFound";
-import { useAnalytics } from "./utils/analyticsUtils";
 import Developers from "./pages/Developers";
+import Roadmaps from "./pages/Roadmaps";
 
 function App() {
-  useAnalytics();
-
   return (
     <Router>
       <Routes>
@@ -21,6 +20,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/analytics" element={<Analytics />} />
         <Route path="/developers" element={<Developers />} />
+        <Route path="/roadmaps" element={<Roadmaps />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>
