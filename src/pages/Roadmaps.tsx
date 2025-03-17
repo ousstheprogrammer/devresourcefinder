@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import Header from "@/components/Header";
@@ -7,7 +6,10 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
-import { Compass, BookOpen, Award, Code, ChevronRight } from "lucide-react";
+import { Compass, BookOpen, Award, Code, ChevronRight, ExternalLink, Youtube } from "lucide-react";
+import RoadmapVisualization from "@/components/RoadmapVisualization";
+import { getRoadmapImage } from "@/utils/roadmapImages";
+import { Button } from "@/components/ui/button";
 
 // Roadmap data types
 interface RoadmapStep {
@@ -30,7 +32,7 @@ interface Roadmap {
   sections: RoadmapSection[];
 }
 
-// Sample roadmap data (we'll start with frontend and backend, and others can be expanded later)
+// Sample roadmap data
 const roadmaps: Record<string, Roadmap> = {
   frontend: {
     profession: "Frontend Developer",
@@ -280,6 +282,230 @@ const roadmaps: Record<string, Roadmap> = {
   }
 };
 
+// YouTube resources by profession
+const youtubeResources: Record<string, { channel: string; description: string; url: string }[]> = {
+  fullstack: [
+    {
+      channel: "Traversy Media",
+      description: "Covers full-stack development, including JavaScript, React, Node.js, and more.",
+      url: "https://www.youtube.com/c/TraversyMedia"
+    },
+    {
+      channel: "The Net Ninja",
+      description: "Amazing tutorials on MERN, Next.js, Vue, and more.",
+      url: "https://www.youtube.com/c/TheNetNinja"
+    },
+    {
+      channel: "Academind",
+      description: "Covers React, Node.js, databases, and full-stack projects.",
+      url: "https://www.youtube.com/c/Academind"
+    },
+    {
+      channel: "Web Dev Simplified",
+      description: "Deep dives into JavaScript and web performance.",
+      url: "https://www.youtube.com/c/WebDevSimplified"
+    }
+  ],
+  devops: [
+    {
+      channel: "TechWorld with Nana",
+      description: "Kubernetes, Docker, Terraform, and CI/CD explained simply.",
+      url: "https://www.youtube.com/c/TechWorldwithNana"
+    },
+    {
+      channel: "KodeKloud",
+      description: "Hands-on DevOps, cloud, and automation tutorials.",
+      url: "https://www.youtube.com/c/KodeKloud"
+    },
+    {
+      channel: "ThePrimeagen",
+      description: "Linux, Vim, and high-performance DevOps tools.",
+      url: "https://www.youtube.com/c/ThePrimeagen"
+    },
+    {
+      channel: "DevOps Toolkit",
+      description: "CI/CD, Kubernetes, Helm, and more.",
+      url: "https://www.youtube.com/c/DevOpsToolkit"
+    }
+  ],
+  data: [
+    {
+      channel: "Ken Jee",
+      description: "Career advice and projects for aspiring data scientists.",
+      url: "https://www.youtube.com/c/KenJee1"
+    },
+    {
+      channel: "StatQuest with Josh Starmer",
+      description: "ML and statistics explained clearly.",
+      url: "https://www.youtube.com/c/joshstarmer"
+    },
+    {
+      channel: "Data School",
+      description: "Pandas, Scikit-learn, and Python for data science.",
+      url: "https://www.youtube.com/c/dataschool"
+    },
+    {
+      channel: "Krish Naik",
+      description: "Python, ML, and deep learning tutorials.",
+      url: "https://www.youtube.com/user/krishnaik06"
+    }
+  ],
+  mobile: [
+    {
+      channel: "Flutter",
+      description: "Official channel with Flutter tutorials.",
+      url: "https://www.youtube.com/c/flutterdev"
+    },
+    {
+      channel: "Academind (React Native)",
+      description: "React Native crash courses.",
+      url: "https://www.youtube.com/c/Academind"
+    },
+    {
+      channel: "CodeWithChris",
+      description: "iOS development using Swift.",
+      url: "https://www.youtube.com/c/CodeWithChris"
+    },
+    {
+      channel: "Android Developers",
+      description: "Official Android dev content.",
+      url: "https://www.youtube.com/c/AndroidDevelopers"
+    }
+  ],
+  ai: [
+    {
+      channel: "DeepLearning.AI",
+      description: "AI news and hands-on ML tutorials.",
+      url: "https://www.youtube.com/c/Deeplearningai"
+    },
+    {
+      channel: "Sentdex",
+      description: "Python, TensorFlow, and ML projects.",
+      url: "https://www.youtube.com/c/sentdex"
+    },
+    {
+      channel: "Two Minute Papers",
+      description: "AI research breakdowns in an easy format.",
+      url: "https://www.youtube.com/c/TwoMinutePapers"
+    },
+    {
+      channel: "Yannic Kilcher",
+      description: "AI research papers and LLM discussions.",
+      url: "https://www.youtube.com/c/YannicKilcher"
+    }
+  ],
+  security: [
+    {
+      channel: "John Hammond",
+      description: "Cybersecurity, CTF challenges, and hacking.",
+      url: "https://www.youtube.com/c/JohnHammond010"
+    },
+    {
+      channel: "HackerSploit",
+      description: "Ethical hacking and penetration testing.",
+      url: "https://www.youtube.com/c/HackerSploit"
+    },
+    {
+      channel: "LiveOverflow",
+      description: "Deep dives into hacking techniques.",
+      url: "https://www.youtube.com/c/LiveOverflow"
+    },
+    {
+      channel: "The Cyber Mentor",
+      description: "Practical ethical hacking guides.",
+      url: "https://www.youtube.com/c/TheCyberMentor"
+    }
+  ],
+  qa: [
+    {
+      channel: "Software Testing Mentor",
+      description: "Manual and automation testing.",
+      url: "https://www.youtube.com/c/SoftwareTestingMentor"
+    },
+    {
+      channel: "Automation Step by Step",
+      description: "Selenium, API testing, and automation.",
+      url: "https://www.youtube.com/c/AutomationStepbyStep"
+    },
+    {
+      channel: "LambdaTest",
+      description: "Advanced test automation strategies.",
+      url: "https://www.youtube.com/c/LambdaTest"
+    },
+    {
+      channel: "Ministry of Testing",
+      description: "QA discussions and best practices.",
+      url: "https://www.youtube.com/c/MinistryofTesting"
+    }
+  ],
+  ux: [
+    {
+      channel: "DesignCourse",
+      description: "UI/UX tutorials with Figma, Webflow, and more.",
+      url: "https://www.youtube.com/c/DesignCourse"
+    },
+    {
+      channel: "Flux Academy",
+      description: "Web design and UX strategies.",
+      url: "https://www.youtube.com/c/FluxAcademy"
+    },
+    {
+      channel: "Gareth David Studio",
+      description: "Adobe tools and UI/UX fundamentals.",
+      url: "https://www.youtube.com/c/GarethDavid"
+    },
+    {
+      channel: "Figma",
+      description: "Official channel with design tutorials.",
+      url: "https://www.youtube.com/c/Figmadesign"
+    }
+  ],
+  frontend: [
+    {
+      channel: "Traversy Media",
+      description: "HTML, CSS, JavaScript and modern frontend frameworks.",
+      url: "https://www.youtube.com/c/TraversyMedia"
+    },
+    {
+      channel: "Kevin Powell",
+      description: "CSS tricks and techniques explained clearly.",
+      url: "https://www.youtube.com/kevinpowell"
+    },
+    {
+      channel: "Fireship",
+      description: "Short and informative videos about modern web development.",
+      url: "https://www.youtube.com/c/Fireship"
+    },
+    {
+      channel: "Codevolution",
+      description: "In-depth React, Angular and Vue tutorials.",
+      url: "https://www.youtube.com/c/Codevolution"
+    }
+  ],
+  backend: [
+    {
+      channel: "Traversy Media",
+      description: "Node.js, Express, MongoDB and other backend technologies.",
+      url: "https://www.youtube.com/c/TraversyMedia"
+    },
+    {
+      channel: "Academind",
+      description: "Node.js, Express, databases, and APIs.",
+      url: "https://www.youtube.com/c/Academind"
+    },
+    {
+      channel: "The Net Ninja",
+      description: "Backend frameworks and database tutorials.",
+      url: "https://www.youtube.com/c/TheNetNinja"
+    },
+    {
+      channel: "Hussein Nasser",
+      description: "Databases, system design, and backend engineering.",
+      url: "https://www.youtube.com/c/HusseinNasser-software-engineering"
+    }
+  ]
+};
+
 // Add basic structure for other professions
 ["devops", "data", "mobile", "ai", "security", "qa", "ux"].forEach(prof => {
   if (!roadmaps[prof]) {
@@ -374,7 +600,49 @@ const Roadmaps = () => {
                   <p className="text-muted-foreground mb-8">
                     Follow this roadmap to become a proficient {roadmap.profession.toLowerCase()}.
                   </p>
+                  
+                  {/* Roadmap Image */}
+                  <div className="mb-12 rounded-lg overflow-hidden border border-border shadow-md">
+                    <img 
+                      src={getRoadmapImage(key)} 
+                      alt={`${roadmap.profession} Roadmap`}
+                      className="w-full object-cover object-center"
+                    />
+                  </div>
                 </div>
+
+                {/* YouTube Resources Section */}
+                {youtubeResources[key] && youtubeResources[key].length > 0 && (
+                  <div className="bg-accent/20 p-6 rounded-lg border border-border mb-12">
+                    <div className="flex items-center gap-3 mb-6">
+                      <Youtube className="h-6 w-6 text-red-500" />
+                      <h3 className="text-2xl font-semibold">Recommended YouTube Resources</h3>
+                    </div>
+                    
+                    <div className="grid gap-4 md:grid-cols-2">
+                      {youtubeResources[key].map((resource, index) => (
+                        <Card key={index} className="overflow-hidden">
+                          <CardHeader className="bg-accent/30 pb-3">
+                            <CardTitle className="flex justify-between items-center">
+                              <span>{resource.channel}</span>
+                              <Button 
+                                variant="ghost" 
+                                size="sm" 
+                                onClick={() => window.open(resource.url, '_blank')}
+                                className="text-primary hover:text-primary/80"
+                              >
+                                <ExternalLink className="h-4 w-4 mr-1" /> Visit
+                              </Button>
+                            </CardTitle>
+                          </CardHeader>
+                          <CardContent className="pt-4">
+                            <CardDescription>{resource.description}</CardDescription>
+                          </CardContent>
+                        </Card>
+                      ))}
+                    </div>
+                  </div>
+                )}
 
                 {roadmap.sections.map((section, index) => (
                   <div key={section.id} className="relative">
