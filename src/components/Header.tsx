@@ -1,5 +1,5 @@
 
-import { BarChart3Icon, Code, Menu } from "lucide-react";
+import { BarChart3Icon, Code, Menu, Code2 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 
@@ -56,6 +56,15 @@ export default function Header() {
                   <NavigationMenuLink className={navigationMenuTriggerStyle()}>
                     <Code className="h-4 w-4 mr-2" />
                     <span>Developers</span>
+                  </NavigationMenuLink>
+                </Link>
+              </NavigationMenuItem>
+              
+              <NavigationMenuItem>
+                <Link to="/programming-languages">
+                  <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                    <Code2 className="h-4 w-4 mr-2" />
+                    <span>Programming Languages</span>
                   </NavigationMenuLink>
                 </Link>
               </NavigationMenuItem>
@@ -147,6 +156,13 @@ export default function Header() {
                   <Button variant="ghost" size="sm" className="w-full justify-start gap-2">
                     <Code className="h-4 w-4" />
                     <span>Developers</span>
+                  </Button>
+                </Link>
+                
+                <Link to="/programming-languages" onClick={() => setIsOpen(false)}>
+                  <Button variant="ghost" size="sm" className="w-full justify-start gap-2">
+                    <Code2 className="h-4 w-4" />
+                    <span>Programming Languages</span>
                   </Button>
                 </Link>
                 

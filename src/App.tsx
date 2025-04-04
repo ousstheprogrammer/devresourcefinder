@@ -11,6 +11,7 @@ import Analytics from "./pages/Analytics";
 import NotFound from "./pages/NotFound";
 import Developers from "./pages/Developers";
 import Roadmaps from "./pages/Roadmaps";
+import ProgrammingLanguages from "./pages/ProgrammingLanguages";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
         <Route path="/analytics" element={<Analytics />} />
         <Route path="/developers" element={<Developers />} />
         <Route path="/roadmaps" element={<Roadmaps />} />
+        <Route path="/programming-languages" element={<ProgrammingLanguages />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>
